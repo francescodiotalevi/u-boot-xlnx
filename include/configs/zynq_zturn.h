@@ -13,6 +13,7 @@
 #define CONFIG_SYS_NO_FLASH
 
 #define CONFIG_ZYNQ_USB
+#define CONFIG_ZYNQ_SDHCI0
 
 #include <configs/zynq-common.h>
 
