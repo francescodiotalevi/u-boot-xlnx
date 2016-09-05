@@ -12,6 +12,9 @@ choice
 	prompt "Xilinx Zynq board select"
 	default TARGET_ZYNQ_ZC702
 
+config TARGET_ZYNQ_TRENZ_7020
+	bool "Trenz 7020"
+
 config TARGET_ZYNQ_ZTURN
 	bool "Zynq ZTurn"
 
@@ -61,6 +64,7 @@ config SYS_SOC
 	default "zynq"
 
 config SYS_CONFIG_NAME
+	default "zynq_trenz_7020" if TARGET_ZYNQ_TRENZ_7020
 	default "zynq_zturn" if TARGET_ZYNQ_ZTURN
 	default "zynq_zed" if TARGET_ZYNQ_ZED
 	default "zynq_microzed" if TARGET_ZYNQ_MICROZED

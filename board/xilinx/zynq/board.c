@@ -79,7 +79,10 @@ int board_init(void)
 
 int phys_reset(void)
 {
-	struct gpio_desc reset_gpio;
+
+#if 0
+	struct gpio_desc reset_gpio_eth;
+	struct gpio_desc reset_gpio_usb;
 	int nodeoffset;
 	const void *blob = gd->fdt_blob;
 
@@ -89,23 +92,42 @@ int phys_reset(void)
 	if (nodeoffset < 0)
 		return nodeoffset;
 
-	gpio_request_by_name_nodev(blob, nodeoffset, "phys-reset-gpio", 0,
-				&reset_gpio, 0);
+	gpio_request_by_name_nodev(blob, nodeoffset, "phy-reset-gpio-eth", 0,
+				&reset_gpio_eth, 0);
 
-	if (dm_gpio_is_valid(&reset_gpio)) {
+	if (dm_gpio_is_valid(&reset_gpio_eth)) {
 		/* reset PHYs (ethernet and USB) before any driver comes up */
-		dm_gpio_set_dir_flags(&reset_gpio, reset_gpio.flags |
+		dm_gpio_set_dir_flags(&reset_gpio_eth, reset_gpio_eth.flags |
 				GPIOD_IS_OUT | GPIOD_IS_OUT_ACTIVE);
 
 		mdelay(100);
-		dm_gpio_set_dir_flags(&reset_gpio, (reset_gpio.flags |
+		dm_gpio_set_dir_flags(&reset_gpio_eth, (reset_gpio_eth.flags |
 				GPIOD_IS_OUT) & ~GPIOD_IS_OUT_ACTIVE);
 
 		/* wait for PHYs to come up before going on */
 		mdelay(100);
 
-		printf("PHYs reset OK\n");
+		printf("PHY eth reset OK\n");
 	}
+
+	gpio_request_by_name_nodev(blob, nodeoffset, "phy-reset-gpio-eth", 0,
+				&reset_gpio_usb, 0);
+
+	if (dm_gpio_is_valid(&reset_gpio_usb)) {
+		/* reset PHYs (ethernet and USB) before any driver comes up */
+		dm_gpio_set_dir_flags(&reset_gpio_usb, reset_gpio_usb.flags |
+				GPIOD_IS_OUT | GPIOD_IS_OUT_ACTIVE);
+
+		mdelay(100);
+		dm_gpio_set_dir_flags(&reset_gpio_usb, (reset_gpio_usb.flags |
+				GPIOD_IS_OUT) & ~GPIOD_IS_OUT_ACTIVE);
+
+		/* wait for PHYs to come up before going on */
+		mdelay(100);
+
+		printf("PHY USB reset OK\n");
+	}
+#endif
 
 	return 0;
 }
