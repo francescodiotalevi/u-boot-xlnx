@@ -1,0 +1,75 @@
+/*
+ * Trenz 7015 board DTS
+ *
+ * Based on ZED DTS, which is
+ *  Copyright (C) 2011 - 2015 Xilinx
+ *  Copyright (C) 2012 National Instruments Corp.
+ *
+ * SPDX-License-Identifier:    GPL-2.0+
+ */
+
+/dts-v1/;
+#include "zynq-7000.dtsi"
+#include <dt-bindings/gpio/gpio.h>
+
+/ {
+	model = "Trenz 7015 03 Board";
+	compatible = "xlnx,zynq-te0715", "xlnx,zynq-7000";
+
+	aliases {
+		serial0 = &uart1;
+		ethernet0 = &gem0;
+		mmc0 = &sdhci0;
+	};
+
+	board {
+		phy-reset-gpio-eth = <&gpio0 50 GPIO_ACTIVE_LOW>;
+		phy-reset-gpio-usb = <&gpio0 51 GPIO_ACTIVE_LOW>;
+	};
+
+	memory {
+		device_type = "memory";
+		reg = <0 0x40000000>;
+	};
+
+	chosen {
+		bootargs = "";
+		stdout-path = "serial0:115200n8";
+	};
+
+	usb_phy0: phy0 {
+		compatible = "usb-nop-xceiv";
+		#phy-cells = <0>;
+	};
+};
+
+&clkc {
+	ps-clk-frequency = <33333333>;
+};
+
+&gem0 {
+	status = "okay";
+	phy-mode = "rgmii-id";
+	phy-handle = <&ethernet_phy>;
+
+	ethernet_phy: ethernet-phy@0 {
+		reg = <0>;
+	};
+};
+
+
+&sdhci0 {
+	u-boot,dm-pre-reloc;
+	status = "okay";
+};
+
+&uart1 {
+	u-boot,dm-pre-reloc;
+	status = "okay";
+};
+
+&usb0 {
+	status = "okay";
+	dr_mode = "host";
+	usb-phy = <&usb_phy0>;
+};

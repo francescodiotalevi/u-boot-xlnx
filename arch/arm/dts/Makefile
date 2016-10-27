@@ -65,6 +65,7 @@ dtb-$(CONFIG_ARCH_ZYNQ) += zynq-zc702.dtb \
 	zynq-zed.dtb \
 	zynq-zturn.dtb \
 	zynq-trenz-7020.dtb \
+	zynq-trenz-7015.dtb \
 	zynq-zybo.dtb \
 	zynq-microzed.dtb \
 	zynq-cc108.dtb \

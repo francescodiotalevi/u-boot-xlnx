@@ -31,9 +31,13 @@ static int arasan_sdhci_probe(struct udevice *dev)
 
 	host->version = sdhci_readw(host, SDHCI_HOST_VERSION);
 
+#ifdef CONFIG_ZCB
+	add_sdhci(host, 25000000,
+		  1000000);
+#else
 	add_sdhci(host, CONFIG_ZYNQ_SDHCI_MAX_FREQ,
 		  CONFIG_ZYNQ_SDHCI_MIN_FREQ);
-
+#endif
 	upriv->mmc = host->mmc;
 
 	return 0;

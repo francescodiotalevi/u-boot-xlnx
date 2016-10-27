@@ -1,0 +1,25 @@
+/*
+ * Configuration for Zynq Evaluation and Development Board - Trenz 7020
+ * Based on Configuration for Zynq Evaluation and Development Board - ZedBoard
+ * which is (C) Copyright 2013 Xilinx, Inc.
+ * See zynq-common.h for Zynq common configs
+ *
+ * SPDX-License-Identifier:    GPL-2.0+
+ */
+
+#ifndef __CONFIG_ZYNQ_ZED_H
+#define __CONFIG_ZYNQ_ZED_H
+
+/* This is only for ZCB that requires to boot from qspi and then jump to mmc
+ * to continue loading linux stuff
+ */
+#define CONFIG_ZCB
+
+#define CONFIG_SYS_NO_FLASH
+
+#define CONFIG_ZYNQ_USB
+#define CONFIG_ZYNQ_SDHCI0
+
+#include <configs/zynq-common.h>
+
+#endif /* __CONFIG_ZYNQ_TRENZ_7015_H */

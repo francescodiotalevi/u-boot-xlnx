@@ -79,8 +79,6 @@ int board_init(void)
 
 int phys_reset(void)
 {
-
-#if 0
 	struct gpio_desc reset_gpio_eth;
 	struct gpio_desc reset_gpio_usb;
 	int nodeoffset;
@@ -110,7 +108,7 @@ int phys_reset(void)
 		printf("PHY eth reset OK\n");
 	}
 
-	gpio_request_by_name_nodev(blob, nodeoffset, "phy-reset-gpio-eth", 0,
+	gpio_request_by_name_nodev(blob, nodeoffset, "phy-reset-gpio-usb", 0,
 				&reset_gpio_usb, 0);
 
 	if (dm_gpio_is_valid(&reset_gpio_usb)) {
@@ -127,7 +125,6 @@ int phys_reset(void)
 
 		printf("PHY USB reset OK\n");
 	}
-#endif
 
 	return 0;
 }
@@ -135,7 +132,10 @@ int phys_reset(void)
 int board_late_init(void)
 {
 	phys_reset();
-
+    
+#ifdef CONFIG_ZCB
+		setenv("modeboot", "sdboot");
+#else
 	switch ((zynq_slcr_get_boot_mode()) & ZYNQ_BM_MASK) {
 	case ZYNQ_BM_QSPI:
 		setenv("modeboot", "qspiboot");
@@ -156,6 +156,7 @@ int board_late_init(void)
 		setenv("modeboot", "");
 		break;
 	}
+#endif
 
 	return 0;
 }
