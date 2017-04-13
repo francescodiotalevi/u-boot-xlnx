@@ -134,6 +134,7 @@ int board_late_init(void)
 	phys_reset();
     
 #ifdef CONFIG_ZCB
+		#warning Set SDHCI0 clock to 50MHz in the PS7 configuration
 		setenv("modeboot", "sdboot");
 #else
 	switch ((zynq_slcr_get_boot_mode()) & ZYNQ_BM_MASK) {
